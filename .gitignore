@@ -148,3 +148,4 @@ fabric.properties
 
 # Custom
 reuters21578*
+/src/main/python/out/*

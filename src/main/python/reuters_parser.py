@@ -25,8 +25,6 @@ class ReutersParser:
     def parse(self):
         tokens_list = list()
 
-        # self.reuters_files = self.reuters_files[:5]  # REMOVE ONCE ALGORITHM DONE
-
         for file_path in self.reuters_files:
             print "Reading {}".format(file_path)
 
@@ -39,13 +37,12 @@ class ReutersParser:
             documents = soup.find_all('reuters')
 
             print("Found {} documents".format(len(documents)))
-
-            #    documents = documents[0:1]  # REMOVE ONCE ALGORITHM DONE
+            print("Parsing documents in {}".format(file_path))
 
             # Look in all document bodies
+            file_token_pairs = list()
             for doc in documents:
                 doc_id = int(doc['newid'])
-                print("Parsing document {}".format(doc_id))
 
                 if doc.find('body'):
                     body_text = str(doc.body.text)
@@ -58,10 +55,12 @@ class ReutersParser:
                         term_list = self.compress_terms(term_list)
 
                     token_pairs = [(term, doc_id) for term in term_list]
-                    tokens_list.extend(token_pairs)
-                    # print("Tokenized document {} ({} tokens)".format(doc_id, len(doc_tokens)))
+                    file_token_pairs.extend(token_pairs)
 
-        # print("Parsed {} documents and found {} tokens".format(len(documents), len(index)))
+            print("Found {} tokens in {} documents in file {}.".format(len(file_token_pairs), len(documents), file_path))
+            tokens_list.extend(file_token_pairs)
+
+        print("Found {} tokens total.".format(len(tokens_list)))
         return tokens_list
 
     def compress_terms(self, term_list):

@@ -1,12 +1,17 @@
 import sys
+import os
 
 
 class SpimiInverter:
-    def __init__(self, tokens, output_file_prefix='block_out', block_size_limit_mb=2):
+    def __init__(self, tokens, output_file_prefix='block_out', output_directory='out', block_size_limit_mb=2):
         self.tokens_iter = iter(tokens)
         self.output_file_prefix = output_file_prefix
+        self.output_directory = output_directory
         self.block_size_limit_mb = block_size_limit_mb
         self.block_num = 0
+
+        if not os.path.exists(self.output_directory):
+            os.mkdir(self.output_directory)
 
     def run(self):
         output_files = list()
@@ -51,7 +56,8 @@ class SpimiInverter:
         return [term for term in sorted(dictionary.keys())]
 
     def _write_block_to_disk(self, sorted_terms, dictionary):
-        file_path = '{}-{}'.format(self.output_file_prefix, self.block_num)
+        file_name = '{}-{}'.format(self.output_file_prefix, self.block_num)
+        file_path = os.path.join(self.output_directory, file_name)
         with open(file_path, 'w') as f:
             for term in sorted_terms:
                 output_line = '{} {}\n'.format(term, ' '.join([str(doc_id) for doc_id in dictionary[term]]))
