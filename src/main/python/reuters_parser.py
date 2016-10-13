@@ -12,33 +12,32 @@ sys.setdefaultencoding('utf-8')
 
 class ReutersParser:
 
-    def __init__(self, reuters_folder, compress=False, data_file_suffix='.sgm', stopwords=set(stopwords.words('english'))):
+    def __init__(self, reuters_folder, stem=False, remove_stopwords=False, data_file_suffix='.sgm', stopwords=set(stopwords.words('english'))):
         # Get all sgm data files in reuters folder
         self.reuters_data_folder = reuters_folder
-        self.compress = compress
+        self.stem = stem
+        self.remove_stopwords = remove_stopwords
         self.data_file_suffix = data_file_suffix
         file_path_prefix = os.path.join(os.getcwd(), reuters_folder)
-        self.reuters_files = [os.path.join(file_path_prefix, f) for f in os.listdir(reuters_folder) if
-                         f.endswith(data_file_suffix)]
+        self.reuters_files = [os.path.join(file_path_prefix, f) for f in os.listdir(reuters_folder) if f.endswith(data_file_suffix)]
         self.stopwords = stopwords
 
     def parse(self):
         tokens_list = list()
 
+        self.reuters_files = self.reuters_files[:5]  # Only for testing
+
         for file_path in self.reuters_files:
             print "Reading {}".format(file_path)
-
             with open(file_path) as f:
                 data = f.read()
 
             print('Finding documents')
-
             soup = BeautifulSoup(data, 'html.parser')
             documents = soup.find_all('reuters')
-
             print("Found {} documents".format(len(documents)))
-            print("Parsing documents in {}".format(file_path))
 
+            print("Parsing documents in {}".format(file_path))
             # Look in all document bodies
             file_token_pairs = list()
             for doc in documents:
@@ -50,9 +49,8 @@ class ReutersParser:
                     # tokenize
                     term_list = nltk.word_tokenize(body_text)
 
-                    # compression
-                    if self.compress:
-                        term_list = self.compress_terms(term_list)
+                    # compress if needed
+                    term_list = self.compress_terms(term_list)
 
                     token_pairs = [(term, doc_id) for term in term_list]
                     file_token_pairs.extend(token_pairs)
@@ -64,6 +62,21 @@ class ReutersParser:
         return tokens_list
 
     def compress_terms(self, term_list):
-        # stem & remove stopwords & map
-        stemmer = PorterStemmer()
-        return [stemmer.stem(t) for t in term_list if t not in self.stopwords]
+        """
+        Stem and remove stopwords
+        :param term_list:
+        :return:
+        """
+        # stem & remove stopwords
+        if self.remove_stopwords:
+            if self.stem:
+                stemmer = PorterStemmer()
+                return [stemmer.stem(t) for t in term_list if t not in self.stopwords]
+            else:
+                return [t for t in term_list if t not in self.stopwords]
+        else:
+            if self.stem:
+                stemmer = PorterStemmer()
+                return [stemmer.stem(t) for t in term_list]
+            else:
+                return term_list
