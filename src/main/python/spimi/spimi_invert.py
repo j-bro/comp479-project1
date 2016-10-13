@@ -2,32 +2,33 @@ import sys
 
 
 class SpimiInverter:
-    def __init__(self, tokens, output_file_prefix='block_out', block_size_limit=1000000):
+    def __init__(self, tokens, output_file_prefix='block_out', block_size_limit_mb=2):
         self.tokens_iter = iter(tokens)
         self.output_file_prefix = output_file_prefix
-        self.block_size_limit = block_size_limit
+        self.block_size_limit_mb = block_size_limit_mb
         self.block_num = 0
 
     def run(self):
         output_files = list()
-        while True:
+        done = False
+        while not done:
             dictionary = dict()
-            while sys.getsizeof(dictionary) / 1024 / 1024 <= self.block_size_limit:
-                try:
+            try:
+                while sys.getsizeof(dictionary) / 1024 / 1024 <= self.block_size_limit_mb:
                     token = self.tokens_iter.next()
-                except StopIteration:
-                    print("Finished iterating through token list")
-                    break
-                if token[0] not in dictionary:
-                    postings_list = self._add_to_dictionary(dictionary, token[0])
-                else:
-                    postings_list = self._get_postings_list(dictionary, token[0])
+                    if token[0] not in dictionary:
+                        postings_list = self._add_to_dictionary(dictionary, token[0])
+                    else:
+                        postings_list = self._get_postings_list(dictionary, token[0])
 
-                self._add_to_postings_list(postings_list, token[1])
+                    self._add_to_postings_list(postings_list, token[1])
+            except StopIteration:
+                print("Finished iterating through token list")
+                done = True
 
-            self.block_num += 1
             sorted_terms = self._sort_terms(dictionary)
             file_path = self._write_block_to_disk(sorted_terms, dictionary)
+            self.block_num += 1
             output_files.append(file_path)
 
         return output_files

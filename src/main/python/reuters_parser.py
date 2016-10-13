@@ -25,7 +25,7 @@ class ReutersParser:
     def parse(self):
         tokens_list = list()
 
-        self.reuters_files = [self.reuters_files[0]]  # REPLACE ONCE ALGORITHM DONE
+        # self.reuters_files = self.reuters_files[:5]  # REMOVE ONCE ALGORITHM DONE
 
         for file_path in self.reuters_files:
             print "Reading {}".format(file_path)
@@ -40,7 +40,7 @@ class ReutersParser:
 
             print("Found {} documents".format(len(documents)))
 
-            #    documents = documents[0:1]  # REPLACE ONCE ALGORITHM DONE
+            #    documents = documents[0:1]  # REMOVE ONCE ALGORITHM DONE
 
             # Look in all document bodies
             for doc in documents:
