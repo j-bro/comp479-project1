@@ -14,65 +14,75 @@ class SpimiMerger:
         self.output_file_path = os.path.join(output_directory, output_file_name)
 
     def merge(self):
+        self.intersect()
+
+    def intersect(self):
+        # Open files
         file_handles = [open(f, 'r') for f in self.files_list]
         output_file_handle = open(self.output_file_path, 'w')
-        self.intersect(file_handles, output_file_handle)
 
-
-    def intersect(self, file_handles, output_file_handle):
-        while True:
-            next_lines = [f.readline() for f in file_handles]
-            next_line_to_write_tuple = (-1, '', list())
-            for index, file_line in enumerate(next_lines):
-                line_tuple = self.parse_block_line(file_line)
-
-                # Merge terms if equal
-                if line_tuple[1] == next_line_to_write_tuple[1]:
-                    # TODO merge
+        # Read first line of each opened file
+        next_lines = [f.readline() for f in file_handles]
+        while next_lines:
+            next_line_to_write_obj = SpimiBlockLine(list(), None, list())
+            for block_file_index, file_line in enumerate(next_lines):
+                line_obj = SpimiBlockLine.from_line_string([block_file_index], file_line)
+                # Select line if initial line
+                if next_line_to_write_obj.term is None:
+                    next_line_to_write_obj = line_obj
+                # Merge postings lists if terms equal
+                elif line_obj.term == next_line_to_write_obj.term:
+                    next_line_to_write_obj = line_obj.merge(next_line_to_write_obj)
                 # Replace larger term & list if new term precedes it
-                elif line_tuple[1] < next_line_to_write_tuple[1]:
-                    next_line_to_write_tuple = line_tuple
+                elif line_obj.term < next_line_to_write_obj.term:
+                    next_line_to_write_obj = line_obj
 
-            self.write_line_to_output_file(next_line_to_write_tuple, output_file_handle)
-            next_lines[next_line_to_write_tuple[0]] = file_handles[next_line_to_write_tuple[0]].readline()
+            # TODO comment this confusingness
+            self.write_line_to_output_file(next_line_to_write_obj, output_file_handle)
+            next_line_file_index_list = next_line_to_write_obj.block_file_index_list
+            new_next_lines = [file_handles[index].readline() for index in next_line_file_index_list]
 
-        # while not block1.empty() and not block2.empty():
-        #     term1 = get_term(block1)
-        #     term2 = get_term(block2)
-        #     if term1 == term2:
-        #         pos = merge_postings()  # TODO
-        #         ...
-        #         term1 = next_term(block1)
-        #         term2 = next_term(block2)
-        #     else:
-        #         if term1 < term2:
-        #             add(term1, pos)
-        #             term1 = next_term(block1)
-        #         else:
-        #             add(term2, pos)
-        #             term2 = next_term(block2)
+            # next_line is empty string if end of file is reached
+            for index, new_line in enumerate(new_next_lines):
+                if not new_line:
+                    # Remove from file_handles & next_lines lists
+                    del(next_lines[next_line_file_index_list[index]])
+                    del(file_handles[next_line_file_index_list[index]])
+                else:
+                    next_lines[next_line_file_index_list[index]] = new_line
 
     @staticmethod
-    def write_line_to_output_file(line, output_file_handle):
+    def write_line_to_output_file(line_obj, output_file_handle):
         """
-
-        :param line:
+        Write the line object to a file
+        :param line_obj:
         :param output_file_handle:
         :return:
         """
-        output_file_handle.write(line)
+        output_file_handle.write(str(line_obj))
 
-    @staticmethod
-    def parse_block_line(index, line):
+
+class SpimiBlockLine:
+    def __init__(self, block_file_index_list, term, postings_list):
+        self.block_file_index_list = block_file_index_list
+        self.term = term
+        self.postings_list = postings_list
+
+    @classmethod
+    def from_line_string(cls, block_file_index_list, line_string):
         """
         Parse the data in a block file line.
-        :param line: the line text to be parsed
-        :return: A tuple containing (index, term, postings_list)
+        :param block_file_index_list: the index of the document in which the line is found
+        :param line_string: the line text to be parsed
+        :return: An instance of SpimiBlockLinetuple containing (index, term, postings_list)
         """
-        split_line = line.split(' ')
-        return index, split_line[0], split_line[1:]
+        split_line = line_string.split(' ')
+        return cls(block_file_index_list, split_line[0], [int(doc_id) for doc_id in split_line[1:]])
 
-    @staticmethod
-    def stringify_line_tuple(line_tuple):
-        return '{} {}\n'.format(line_tuple[1], ' '.join([str(doc_id) for doc_id in line_tuple[2]]))
-        # TODO test this
+    def merge(self, other_block_line):
+        new_block_file_index_list = sorted(self.block_file_index_list + other_block_line.block_file_index_list)
+        new_postings_list = sorted(self.postings_list + other_block_line.postings_list)
+        return SpimiBlockLine(new_block_file_index_list, self.term, new_postings_list)
+
+    def __str__(self):
+        return '{} {}\n'.format(self.term, ' '.join([str(doc_id) for doc_id in self.postings_list]))
