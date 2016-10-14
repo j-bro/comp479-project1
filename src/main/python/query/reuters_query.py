@@ -11,9 +11,9 @@ def main(args):
     dictionary_file = args.dictionary if args.dictionary else DICTIONARY_FILE
 
     query_maker = QueryMaker(dictionary_file, args.keywords, args.query_type.lower())
-    result = query_maker.make_query()
+    query = query_maker.make_query()
 
-    print(str(query.get_result()))
+    print(str(query.result))
 
 
 def parse_args(sys_args):
