@@ -1,12 +1,43 @@
+from spimi.dictionary import DictionaryFile
+from list_helper import merge_lists, intersect_lists
+
 
 class Query:
     def __init__(self, keywords, dictionary_file_path):
-        self.keywords = keywords
-        self.dictionary_file_path = dictionary_file_path
+        self.keywords = sorted(keywords)
+        self.dictionary_file = DictionaryFile(dictionary_file_path)
         self.result = None
 
     def run_query(self):
-        raise NotImplementedError('get_result() must be implemented in a subclass of Query.')
+        raise NotImplementedError('run_query() must be implemented in a subclass of Query.')
+
+    def get_dictionary_file_lines_for_keywords(self, keywords):
+        keywords_iter = iter(keywords)
+        next_keyword = keywords_iter.next()
+        print("Searching for keyword {}".format(next_keyword))
+
+        self.dictionary_file.open_handle()
+        result_lines = list()
+        while next_keyword:
+            line = self.dictionary_file.read_line_to_obj()
+            if not line:
+                print("Reached end of dictionary file")
+                break
+
+            if line.term < next_keyword:
+                continue
+            elif line.term == next_keyword:
+                print("Found postings list for term {}".format(next_keyword))
+                result_lines.append(line)
+
+            try:
+                next_keyword = keywords_iter.next()
+                print("Searching for keyword {}".format(next_keyword))
+            except StopIteration:
+                print("Fishined searching for all keywords")
+                break
+
+        return result_lines
 
 
 class AndQuery(Query):
@@ -14,8 +45,10 @@ class AndQuery(Query):
         Query.__init__(self, keywords, dictionary_file_path)
 
     def run_query(self):
-        self.result = None  # TODO use
-        return self.result
+        query_dictionary_file_lines = self.get_dictionary_file_lines_for_keywords(self.keywords)
+        result_postings_list = intersect_lists([result.postings_list for result in query_dictionary_file_lines])
+        self.result = result_postings_list
+        print("Found {} matching documents".format(len(result_postings_list)))
 
 
 class OrQuery(Query):
@@ -23,5 +56,7 @@ class OrQuery(Query):
         Query.__init__(self, keywords, dictionary_file_path)
 
     def run_query(self):
-        self.result = None  # TODO use
-        return self.result
+        query_dictionary_file_lines = self.get_dictionary_file_lines_for_keywords(self.keywords)
+        result_postings_list = merge_lists([result.postings_list for result in query_dictionary_file_lines])
+        self.result = result_postings_list
+        print("Found {} matching documents".format(len(result_postings_list)))

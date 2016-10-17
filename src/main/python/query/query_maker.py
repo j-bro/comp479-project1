@@ -1,18 +1,24 @@
+import os
+
 from query import AndQuery, OrQuery
 
 
 class QueryMaker:
-    def __init__(self, dictionary_file, keywords, query_type):
-        self.dictionary_file = dictionary_file
+    def __init__(self, dictionary_file_path, keywords, query_type):
+        if not os.path.exists(dictionary_file_path):
+            raise Exception("Dictionary file does not exist! {}".format(dictionary_file_path))
+
+        self.dictionary_file_path = dictionary_file_path
         self.keywords = keywords
 
         if query_type == 'and':
-            self.query = AndQuery(keywords, dictionary_file)
+            self.query = AndQuery(keywords, dictionary_file_path)
         elif query_type == 'or':
-            self.query = OrQuery(keywords, dictionary_file)
+            self.query = OrQuery(keywords, dictionary_file_path)
         else:
             raise Exception("Unknown query type {}".format(query_type))
 
     def make_query(self):
-        pass
+        self.query.run_query()
+        return self.query
 

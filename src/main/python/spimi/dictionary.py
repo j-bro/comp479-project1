@@ -6,7 +6,8 @@ class DictionaryFile:
         self.file_handle = None
 
     def open_handle(self, mode='r'):
-        self.file_handle = open(self.file_path, mode)
+        if not self.file_handle:
+            self.file_handle = open(self.file_path, mode)
         return self.file_handle
 
     def write_line(self, line_obj):
@@ -16,6 +17,13 @@ class DictionaryFile:
         :return:
         """
         self.file_handle.write(str(line_obj))
+
+    def read_line_to_obj(self):
+        line_str = self.file_handle.readline()
+        if line_str:
+            return DictionaryFileLine.from_line_string(-1, line_str)
+        else:
+            return None
 
     def close_handle(self):
         self.file_handle.close()

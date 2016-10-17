@@ -1,7 +1,7 @@
 import sys
 import os
 
-from dictionary_file import DictionaryFile, DictionaryFileLine
+from dictionary import DictionaryFile, DictionaryFileLine
 
 
 class SpimiInverter:

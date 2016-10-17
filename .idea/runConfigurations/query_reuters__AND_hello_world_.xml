@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="process_reuters" type="PythonConfigurationType" factoryName="Python">
+  <configuration default="false" name="query_reuters (AND hello world)" type="PythonConfigurationType" factoryName="Python">
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
@@ -12,8 +12,8 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <module name="comp479_project1" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/main/python/reuters/reuters_process.py" />
-    <option name="PARAMETERS" value="" />
+    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/main/python/reuters/reuters_query.py" />
+    <option name="PARAMETERS" value="AND hello world" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <method />
   </configuration>

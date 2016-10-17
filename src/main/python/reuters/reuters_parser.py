@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import os
 import sys
 import nltk
@@ -6,6 +8,7 @@ from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 from bs4 import BeautifulSoup
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # easy hack to import lib module
 reload(sys)
 sys.setdefaultencoding('utf-8')
 

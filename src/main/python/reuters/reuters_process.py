@@ -1,10 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 
 import os
 
 from reuters_parser import ReutersParser
 from fetch_reuters import fetch_reuters
-from spimi import spimi_invert, spimi_merge
+from spimi.merger import SpimiMerger
+from spimi.inverter import SpimiInverter
 
 REUTERS_MODULE_DIR = os.path.dirname(os.path.realpath(__file__))
 OUTPUT_DIR = os.path.join(REUTERS_MODULE_DIR, '..', 'out')
@@ -17,10 +18,10 @@ def main():
     parser = ReutersParser(os.path.join(REUTERS_MODULE_DIR, 'reuters21578'))
     tokens_list = parser.parse()
 
-    inverter = spimi_invert.SpimiInverter(tokens_list, output_file_prefix='no_compression_', output_directory=OUTPUT_DIR)
+    inverter = SpimiInverter(tokens_list, output_file_prefix='no_compression_', output_directory=OUTPUT_DIR)
     output_files = inverter.run()
 
-    merger = spimi_merge.SpimiMerger(output_files, 'no_compression_', output_directory=OUTPUT_DIR)
+    merger = SpimiMerger(output_files, 'no_compression_', output_directory=OUTPUT_DIR)
     merged_output_file = merger.merge()
 
     # With compression
