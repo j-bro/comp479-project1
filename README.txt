@@ -302,8 +302,8 @@ Document IDs matching query: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16, 17, 18, 19, 20, 2
 Searching for keyword schools
 Found postings list for term schools
 Finished searching for all keywords
-Found 4 matching documents
-Document IDs matching query: [860, 878, 3047, 3650]
+Found 7 matching documents
+Document IDs matching query: [860, 878, 3047, 3650, 9584, 10577, 10624]
 
 
 ### OR: zinc potato farm
@@ -336,11 +336,10 @@ with different configurations and output this table at the end of its execution.
 
 | Post-processing   |   Term count |
 |-------------------+--------------|
-| No compression    |        33344 |
-| No numbers        |        32599 |
-| Case folding      |        29619 |
-| Stopwords         |        29597 |
-| Stemming          |        27218 |
+| No compression    |        77714 |
+| No numbers        |        76273 |
+| Case folding      |        69457 |
+| Stopwords         |        69439 |
 
 
 ## What I have learned
