@@ -16,6 +16,14 @@ sys.setdefaultencoding('utf-8')
 class ReutersParser:
 
     def __init__(self, reuters_folder, stem=False, remove_stopwords=False, data_file_suffix='.sgm', stopwords=set(stopwords.words('english'))):
+        """
+        Instantiate the object to parse the Reuters corpus.
+        :param reuters_folder: the folder where the Reuters corpus is stored.
+        :param stem: whether or not to stem the term list (True/False)
+        :param remove_stopwords: whether or not to remove stopwords from the term list (True/False)
+        :param data_file_suffix: the suffix of the Reuters data files.
+        :param stopwords: the set of stopwords to use if the remove_stopwords option is selected.
+        """
         # Get all sgm data files in reuters folder
         self.reuters_data_folder = reuters_folder
         self.stem = stem
@@ -26,6 +34,10 @@ class ReutersParser:
         self.stopwords = stopwords
 
     def parse(self):
+        """
+        Parse the Reuters corpus into a list of (term, docID) pairs.
+        :return: the list of (term, docID) pairs representing the Reuters corpus.
+        """
         tokens_list = list()
 
         self.reuters_files = self.reuters_files[:5]  # Only for testing

@@ -5,18 +5,18 @@ from dictionary import DictionaryFile, DictionaryFileLine
 
 
 class SpimiInverter:
-    def __init__(self, tokens, output_file_prefix='block_out', output_directory='out', block_size_limit_mb=2):
+    def __init__(self, tokens, block_size_limit_mb, output_file_prefix='block_out', output_directory='out'):
         """
         SPIMI inverter.
         :param tokens: list of token tuples to be inverted (term, docID)
+        :param block_size_limit_mb: maximum size of a block
         :param output_file_prefix: prefix for the 'block' files
         :param output_directory: directory to save output files
-        :param block_size_limit_mb: maximum size of a block
         """
         self.tokens_iter = iter(tokens)
+        self.block_size_limit_mb = block_size_limit_mb
         self.output_file_prefix = output_file_prefix
         self.output_directory = output_directory
-        self.block_size_limit_mb = block_size_limit_mb
         self.block_num = 0
 
         if not os.path.exists(self.output_directory):

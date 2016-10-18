@@ -7,12 +7,13 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # 
 from argparse import ArgumentParser
 from query.query_maker import QueryMaker
 
-DICTIONARY_FILE = os.path.abspath('../out/no_compression_master.txt')
+REUTERS_MODULE_DIR = os.path.dirname(os.path.realpath(__file__))
+OUTPUT_DIR = os.path.join(REUTERS_MODULE_DIR, '..', 'out')
+DICTIONARY_FILE = os.path.join(OUTPUT_DIR, 'no_compression_master.txt')
 
 
 def main(args):
     dictionary_file = args.dictionary
-    print(dictionary_file)
 
     query_maker = QueryMaker(dictionary_file, args.keywords, args.query_type.lower())
     query = query_maker.make_query()

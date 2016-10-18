@@ -7,7 +7,9 @@ class SpimiMerger:
     def __init__(self, files_list, output_file_prefix, output_directory='out'):
         """
         SPIMI merger.
-        :param files_list: the list of 'block' files to be merged
+        :param files_list: the list of 'block' files to be merged.
+        :param output_file_prefix: the prefix of the output files.
+        :param output_directory: the output directory.
         """
         self.files_list = files_list
         output_file_name = '{}master.{}'.format(output_file_prefix, 'txt')
@@ -15,12 +17,13 @@ class SpimiMerger:
         self.output_file = DictionaryFile(output_file_path)
 
     def merge(self):
-        self.intersect()
-
-    def intersect(self):
+        """
+        Merge the block files into one master dictionary file.
+        :return: the DictionaryFile instance of the merged master dictionary file.
+        """
         # Open files
         file_handles = [f.open_handle() for f in self.files_list]
-        output_file_handle = self.output_file.open_handle(mode='w')
+        self.output_file.open_handle(mode='w')
 
         # Read first line of each opened file
         next_lines = [f.readline() for f in file_handles]
@@ -38,7 +41,7 @@ class SpimiMerger:
                 elif line_obj.term < next_line_to_write_obj.term:
                     next_line_to_write_obj = line_obj
 
-            # TODO comment this confusingness
+            # Storing indices to be able to close the files when they are finished being parsed
             self.output_file.write_line(next_line_to_write_obj)
             next_line_file_index_list = next_line_to_write_obj.block_file_index_list
             new_next_lines = [file_handles[index].readline() for index in next_line_file_index_list]

@@ -1,19 +1,19 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="fetch_reuters" type="PythonConfigurationType" factoryName="Python">
+  <configuration default="false" name="query_reuters (AND Jimmy Carter)" type="PythonConfigurationType" factoryName="Python">
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
-    <option name="SDK_HOME" value="" />
+    <option name="SDK_HOME" value="$USER_HOME$/.virtualenvs/comp479/bin/python" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/main/python" />
-    <option name="IS_MODULE_SDK" value="true" />
+    <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <module name="comp479_project1" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/main/python/reuters/fetch.py" />
-    <option name="PARAMETERS" value="" />
+    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/main/python/reuters/reuters_query.py" />
+    <option name="PARAMETERS" value="AND Jimmy Carter" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <method />
   </configuration>
