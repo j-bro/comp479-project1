@@ -82,17 +82,20 @@ It can then be queried using the reuters_query.py script.
 Searching for keyword Carter
 Found postings list for term Carter
 Searching for keyword Jimmy
+Found postings list for term Jimmy
 Finished searching for all keywords
-Found 5 matching documents
-Document IDs matching query: [854, 965, 1993, 2534, 3380]
+Found 6 matching documents
+Document IDs matching query: [12136, 13540, 17023, 18005, 19432, 20614]
 
 #### OR query
 Searching for keyword Carter
 Found postings list for term Carter
 Searching for keyword Jimmy
+Found postings list for term Jimmy
 Finished searching for all keywords
-Found 5 matching documents
-Document IDs matching query: [854, 965, 1993, 2534, 3380]
+Found 26 matching documents
+Document IDs matching query: [854, 965, 1993, 2534, 3380, 5465, 5525, 10252, 11114, 11118, 11330, 12136, 12677, 13540,
+15158, 15473, 16887, 17023, 17325, 17363, 18005, 18438, 18962, 19432, 20614, 21308]
 
 
 ### Green Party
@@ -102,8 +105,8 @@ Found postings list for term Green
 Searching for keyword Party
 Found postings list for term Party
 Finished searching for all keywords
-Found 0 matching documents
-Document IDs matching query: []
+Found 1 matching documents
+Document IDs matching query: [21577]
 
 #### OR query
 Searching for keyword Green
@@ -111,9 +114,19 @@ Found postings list for term Green
 Searching for keyword Party
 Found postings list for term Party
 Finished searching for all keywords
-Found 36 matching documents
+Found 206 matching documents
 Document IDs matching query: [60, 219, 226, 234, 308, 338, 345, 871, 1249, 1685, 1753, 1900, 1957, 2132, 2162, 2228,
-2404, 2556, 2627, 2786, 2823, 2965, 3188, 3451, 3488, 3502, 3567, 3670, 4070, 4166, 4247, 4670, 4674, 4705, 4719, 4736]
+2404, 2556, 2627, 2786, 2823, 2965, 3188, 3451, 3488, 3502, 3567, 3670, 4070, 4166, 4247, 4670, 4674, 4705, 4719, 4736,
+5107, 5124, 5161, 5190, 5208, 5221, 5262, 5289, 5325, 5338, 5774, 6052, 6156, 6190, 6345, 6396, 6400, 6698, 6945, 7043,
+7415, 7536, 7549, 7630, 7777, 7849, 7941, 8073, 8133, 8139, 8307, 8342, 8493, 8627, 8727, 9140, 9247, 9328, 9479, 9847,
+9848, 10210, 10271, 10290, 10355, 10379, 10621, 10646, 10666, 11172, 11175, 11176, 11245, 11397, 11442, 11742, 11768,
+11779, 12300, 12431, 12440, 12612, 12737, 12750, 12792, 12878, 12879, 13082, 13084, 13257, 13277, 13323, 13347, 13396,
+13417, 13419, 13420, 13446, 13458, 13527, 13534, 13564, 13576, 13606, 13627, 13637, 13671, 13692, 13725, 13752, 13993,
+13995, 14030, 14357, 14635, 14809, 14819, 14826, 14874, 14950, 14951, 15369, 15372, 15373, 15375, 15408, 15450, 15452,
+15453, 15456, 15470, 15549, 15795, 16137, 16181, 16198, 16226, 16770, 16774, 16780, 16787, 16876, 17012, 17040, 17043,
+17047, 17055, 17070, 17072, 17075, 17170, 17172, 17188, 17249, 17259, 17272, 17305, 17402, 17415, 17419, 17432, 17433,
+17893, 17934, 17966, 17970, 18469, 18507, 19027, 19034, 19039, 19157, 19191, 19405, 19430, 19495, 19508, 19525, 19566,
+19662, 19960, 20061, 20075, 20555, 21118, 21276, 21536, 21547, 21575, 21577]
 
 
 ### Innovations in telecommunication
@@ -124,8 +137,8 @@ Found postings list for term in
 Searching for keyword telecommunication
 Found postings list for term telecommunication
 Finished searching for all keywords
-Found 1 matching documents
-Document IDs matching query: [3552]
+Found 6 matching documents
+Document IDs matching query: [3552, 12143, 12188, 12459, 17460, 19016]
 
 #### OR query
 Searching for keyword Innovations

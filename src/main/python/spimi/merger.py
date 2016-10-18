@@ -48,13 +48,16 @@ class SpimiMerger:
 
             # next_line is empty string if end of file is reached
             for index, new_line in enumerate(new_next_lines):
-                if not new_line:
-                    # Remove from file_handles & next_lines lists (+ close handle)
-                    del(next_lines[next_line_file_index_list[index]])
-                    file_handles[next_line_file_index_list[index]].close()
-                    del(file_handles[next_line_file_index_list[index]])
-                else:
-                    next_lines[next_line_file_index_list[index]] = new_line
+                try:
+                    if not new_line:
+                        # Remove from file_handles & next_lines lists (+ close handle)
+                        del(next_lines[next_line_file_index_list[index]])
+                        file_handles[next_line_file_index_list[index]].close()
+                        del(file_handles[next_line_file_index_list[index]])
+                    else:
+                        next_lines[next_line_file_index_list[index]] = new_line
+                except IndexError:
+                    continue
 
         # Close output file
         self.output_file.close_handle()

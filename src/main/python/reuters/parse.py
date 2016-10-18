@@ -45,8 +45,6 @@ class ReutersParser:
         """
         tokens_list = list()
 
-        self.reuters_files = self.reuters_files[:5]  # Only for testing
-
         for file_path in self.reuters_files:
             print "Reading {}".format(file_path)
             with open(file_path) as f:
