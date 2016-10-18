@@ -15,11 +15,14 @@ sys.setdefaultencoding('utf-8')
 
 class ReutersParser:
 
-    def __init__(self, reuters_folder, stem=False, remove_stopwords=False, data_file_suffix='.sgm', stopwords=set(stopwords.words('english'))):
+    def __init__(self, reuters_folder, stem=False, case_folding=False, no_numbers=False, remove_stopwords=False,
+                 data_file_suffix='.sgm', stopwords=set(stopwords.words('english'))):
         """
         Instantiate the object to parse the Reuters corpus.
         :param reuters_folder: the folder where the Reuters corpus is stored.
         :param stem: whether or not to stem the term list (True/False)
+        :param case_folding: whether or not to use case folding on the term list (True/False)
+        :param no_numbers: whether or not to remove numbers from the term list (True/False)
         :param remove_stopwords: whether or not to remove stopwords from the term list (True/False)
         :param data_file_suffix: the suffix of the Reuters data files.
         :param stopwords: the set of stopwords to use if the remove_stopwords option is selected.
@@ -27,6 +30,8 @@ class ReutersParser:
         # Get all sgm data files in reuters folder
         self.reuters_data_folder = reuters_folder
         self.stem = stem
+        self.case_folding = case_folding
+        self.no_numbers = no_numbers
         self.remove_stopwords = remove_stopwords
         self.data_file_suffix = data_file_suffix
         file_path_prefix = os.path.join(os.getcwd(), reuters_folder)
@@ -84,14 +89,22 @@ class ReutersParser:
         """
         # stem & remove stopwords
         if self.remove_stopwords:
-            if self.stem:
-                stemmer = PorterStemmer()
-                return [stemmer.stem(t) for t in term_list if t not in self.stopwords]
-            else:
-                return [t for t in term_list if t not in self.stopwords]
+            term_list = [t for t in term_list if t not in self.stopwords]
+        if self.stem:
+            stemmer = PorterStemmer()
+            return [stemmer.stem(t) for t in term_list]
+        if self.no_numbers:
+            term_list = [t for t in term_list if not self.is_number(t)]
+        if self.case_folding:
+            term_list = [t.lower() for t in term_list]
+
+        return term_list
+
+    @staticmethod
+    def is_number(string):
+        try:
+            int_value = int(string)
+        except ValueError:
+            return False
         else:
-            if self.stem:
-                stemmer = PorterStemmer()
-                return [stemmer.stem(t) for t in term_list]
-            else:
-                return term_list
+            return True

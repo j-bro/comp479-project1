@@ -42,7 +42,7 @@ class Query:
                 next_keyword = keywords_iter.next()
                 print("Searching for keyword {}".format(next_keyword))
             except StopIteration:
-                print("Fishined searching for all keywords")
+                print("Finished searching for all keywords")
                 break
 
         return result_lines
